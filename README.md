@@ -1,0 +1,16 @@
+# single-cell-rcc-pipeline
+Data files and code for analysis of single-cell ccRCC data for the manuscript "Tumor-Specific Cell Populations in Clear Cell Renal Carcinoma Associated with Clinical Outcome Identified Using Single-Cell Protein Activity Inference." Includes code for VIPER protein activity inference pipeline
+
+"singlecell_gex_viper_analysis.R" contains the single-cell ARACNe/VIPER pipeline implementing gene expression clustering as first step, novel clustering algorithm (louvain with optimal resolution selection by subsampled silhouette scoring), singleR for cell type identification, and InferCNV. ARACNe is run on patient-by-patient gene expression cluster metacells, and metaVIPER is run with all patient-derived ARACNe networks on batch-corrected metacell gene expression signature combined across all patients, computed with Seurat SCTransform Pipeline. Script includes code for gene expression and VIPER-level clustering, differential expression, and receptor-ligand inference, combining analysis of all scRNASeq ccRCC data. Also includes InferCNV commands for inference of copy number variations.
+
+"cytek_analysis.R" contains script to cluster flow cytometry data and compare directly to gene expression and VIPER data as computed from "singlecell_gex_viper_analysis.R"
+
+"bulkRNASeq_survival_analysis.R" contains script to compute gene set enrichment in bulk RNASeq data of genes differentially upregulated in novel tumor macrophage population identified at the single-cell level. Also includes code for survival analysis of tumor macrophage gene set enrichment association with time-to-post-surgical-recurrence.
+
+"IHC_analysis.R" contains script to analyze Immunohistochemistry data from validation experiment-- for each patient and each fluorescence marker (CD68/CD163, CD3, APOE, TREM2, C1Q), cutoff value was applied to differentiate positive vs negative staining, odds ratio of C1Q/TREM2/APOE co-staining with CD68/CD163 were computed, and frequencies of each combination of C1Q/TREM2/APOE positive macrophages were calculated in tumor stroma vs adjacent normal tissue. In validation dataset C1Q/TREM2/APOE positive macrophage population frequencies were associated with time-to-post-surgical-recurrence.
+
+raw IHC data are stored in folder "IHC_data_allsamples" raw single-cell sequencing data are stored in folder "singlecell_rawdata" inferred single-cell ARACNe networks are stored in folder "sc_nets" raw flow cytometry data are stored in folder "cytek_data" code for execution of ARACNe script on high-performance computing cluster is stored in folder "single-cell-pipeline-master" database of known receptor-ligand pairs from RIKEN FANTOM5 online resource is stored in file "PairsLigRec.csv" raw bulk RNASeq dataset for comparison of patients with post-surgical recurrence vs no post-surgical recurrence is stored at "Vinson_est_counts_genes_kallisto.txt", with sample annotations detailed in the bulkRNASeq_survival_analysis.R script
+
+Processed Seurat Objects combining all patient data and analysis at the VIPER level for CD45+ and CD45- populations are stored in objects "cd45neg_merged_seurat_viper.rds", "cd45pos_merged_seurat_viper.rds"
+
+gene chromosomal locations required for InferCNV are stored at "chromosome_locations_noDupGenename_armloc.txt"
